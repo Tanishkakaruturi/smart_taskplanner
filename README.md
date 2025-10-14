@@ -44,17 +44,46 @@ Traditional goal planning suffers from:
 - **CORS Configuration**: Secure cross-origin resource sharing for frontend-backend communication
 - **Comprehensive Error Handling**: Graceful error recovery with meaningful user feedback
 
-### Advanced Analytics
-- **Progress Dashboard**: Overall completion rates and goal statistics
-- **Export Capabilities**: JSON and text format exports for external tool integration
-- **Success Probability**: AI-calculated likelihood estimates based on goal parameters
-- **Resource Library**: Curated recommendations for tools, apps, and learning materials
-
-## Quick Start
-
 ### Prerequisites
 - Python 3.8 or higher
 - Modern web browser
 - OpenAI API key for enhanced AI capabilities
-  
+Installation & Setup
+Clone the Repository
 
+bash
+git clone https://github.com/yourusername/smart-task-planner.git
+cd smart-task-planner
+Set Up Virtual Environment
+
+bash
+# Create virtual environment
+python -m venv venv
+
+# Activate environment
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
+Install Dependencies
+
+bash
+pip install -r requirements.txt
+Configure Environment
+
+bash
+# Create .env file
+echo "OPENAI_API_KEY=your-api-key-here" > .env
+Launch Application
+
+bash
+# Terminal 1 - Start Backend Server (Port 5500)
+python main.py
+
+# Terminal 2 - Start Frontend Server (Port 3000)
+python serve_frontend.py
+Access Application
+
+Web Interface: http://localhost:3000
+API Documentation: http://localhost:5500/docs
+API Base URL: http://localhost:5500
