@@ -1,62 +1,61 @@
-Smart Task Planner 🎯
-A simple AI-powered web app that breaks down your goals into actionable tasks.
+# Smart Task Planner - AI-Powered Goal Management System
 
-What It Does
-Enter any goal (like "Learn tennis")
+<div align="center">
 
-Get a step-by-step task plan with time estimates
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)
+![OpenAI](https://img.shields.io/badge/OpenAI-GPT--3.5--turbo-purple.svg)
 
-Tasks have deadlines, dependencies, and priorities
+**Transform goals into actionable, time-bound task plans with AI-powered intelligence**
 
-Track your progress as you complete tasks
+[Features](#-features) • [Demo](#-live-demo) • [Quick Start](#-quick-start) • [API Docs](#-api-documentation) • [Architecture](#-architecture)
 
-Quick Start
-Install dependencies
+</div>
 
-bash
-pip install -r requirements.txt
-Run the app
+## 📋 Overview
 
-bash
-# Terminal 1 - Backend
-python main.py
+Smart Task Planner is an intelligent web application that leverages AI reasoning to break down complex goals into manageable, dependency-aware tasks with realistic timelines. Whether you're learning new skills, launching projects, or planning business initiatives, our system generates personalized action plans that adapt to your timeframe and goal complexity.
 
-# Terminal 2 - Frontend  
-python serve_frontend.py
-Open your browser
+### 🎯 Business Problem Solved
 
-Go to: http://localhost:3000
+Traditional goal planning suffers from:
+- **Planning paralysis** - Not knowing where to start
+- **Unrealistic timelines** - Poor time estimation
+- **Missing dependencies** - Overlooking task relationships
+- **Lack of structure** - No clear progression path
 
-API docs: http://localhost:5500/docs
+**Our Solution**: AI-generated task breakdowns with intelligent time estimation, dependency mapping, and domain-specific insights.
 
-Files Overview
-main.py - FastAPI backend server
+## Features
 
-ai_service.py - AI task generation logic
+## Intelligent AI Core
+- **Domain-Aware Task Generation**: Specialized templates for sports, languages, business, and general goals
+- **Smart Time Estimation**: Realistic hour calculations based on timeframe and complexity
+- **Dependency Mapping**: Automatic task sequencing with proper prerequisite relationships
+- **Adaptive Deadlines**: Intelligent deadline distribution across short and long timeframes
 
-serve_frontend.py - Web interface server
+### Enhanced User Experience
+- **Modern Responsive UI**: Clean interface that works seamlessly across all devices
+- **Real-time Progress Tracking**: Live completion metrics and visual progress indicators
+- **Interactive Task Management**: Mark tasks complete/reopen with progress persistence
+- **Resource Recommendations**: AI-curated tools and resources based on goal type
 
-frontend/index.html - Simple web UI
+### Enterprise-Grade Architecture
+- **RESTful API Design**: Well-documented, versioned endpoints with proper HTTP status codes
+- **SQLite Database**: Persistent storage with relational integrity for goals and tasks
+- **CORS Configuration**: Secure cross-origin resource sharing for frontend-backend communication
+- **Comprehensive Error Handling**: Graceful error recovery with meaningful user feedback
 
-requirements.txt - Python packages needed
+### Advanced Analytics
+- **Progress Dashboard**: Overall completion rates and goal statistics
+- **Export Capabilities**: JSON and text format exports for external tool integration
+- **Success Probability**: AI-calculated likelihood estimates based on goal parameters
+- **Resource Library**: Curated recommendations for tools, apps, and learning materials
 
-How to Use
-Type your goal in the web page
+## Quick Start
 
-Add optional timeframe (like "1 hour" or "2 weeks")
-
-Click "Generate AI Task Plan"
-
-Get your customized task breakdown!
-
-Example
-Goal: "Learn tennis in 1 hour"
-
-AI Output:
-
-Research basics & find local options (30 mins)
-
-Practice basic swings (30 mins)
-
-Perfect for students learning to break down projects and manage time! 🚀
+### Prerequisites
+- Python 3.8 or higher
+- Modern web browser
+- (Optional) OpenAI API key for enhanced AI capabilities
 
