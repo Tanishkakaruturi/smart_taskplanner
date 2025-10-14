@@ -12,11 +12,11 @@
 
 </div>
 
-## 📋 Overview
+## Overview
 
 Smart Task Planner is an intelligent web application that leverages AI reasoning to break down complex goals into manageable, dependency-aware tasks with realistic timelines. Whether you're learning new skills, launching projects, or planning business initiatives, our system generates personalized action plans that adapt to your timeframe and goal complexity.
 
-### 🎯 Business Problem Solved
+### Business Problem Solved
 
 Traditional goal planning suffers from:
 - **Planning paralysis** - Not knowing where to start
