@@ -8,8 +8,6 @@
 
 **Transform goals into actionable, time-bound task plans with AI-powered intelligence**
 
-[Features](#-features) • [Demo](#-live-demo) • [Quick Start](#-quick-start) • [API Docs](#-api-documentation) • [Architecture](#-architecture)
-
 </div>
 
 ## Overview
