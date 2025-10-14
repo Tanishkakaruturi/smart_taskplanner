@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Task Planner</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        .status { padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .status-success { background: #d4edda; color: #155724; }
+        .status-error { background: #f8d7da; color: #721c24; }
+        .status-warning { background: #fff3cd; color: #856404; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
+        button { background: #007bff; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        .task-card { background: #f8f9fa; border-left: 4px solid #007bff; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .task-priority-high { border-left-color: #dc3545; }
+        .task-priority-medium { border-left-color: #ffc107; }
+        .hidden { display: none; }
+        .loading { text-align: center; padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Smart Task Planner</h1>
+        
+        <div class="form-group">
+            <label for="goal">Your Goal:</label>
+            <textarea id="goal" rows="3" placeholder="e.g., Launch a product in 2 weeks">Launch a product in 2 weeks</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="timeframe">Timeframe (optional):</label>
+            <input type="text" id="timeframe" placeholder="e.g., 2 weeks, 1 month, 3 months" value="2 weeks">
+        </div>
+        
+        <button onclick="breakDownGoal()">Generate AI Task Plan</button>
+        
+        <div id="loading" class="loading hidden">
+            <p>AI is breaking down your goal into tasks...</p>
+        </div>
+        
+        <div id="results" class="hidden">
+            <h2>Your AI-Generated Task Plan</h2>
+            <div id="tasks-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // Test backend connection on page load
+        
+        async function breakDownGoal() {
+            const goal = document.getElementById('goal').value;
+            const timeframe = document.getElementById('timeframe').value;
+            
+            if (!goal) {
+                alert('Please enter a goal!');
+                return;
+            }
+            
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('results').classList.add('hidden');
+            
+            try {
+                console.log('Sending request to AI backend...');
+                
+                const response = await fetch('http://localhost:5500/breakdown-goal', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        goal: goal,
+                        timeframe: timeframe
+                    })
+                });
+                
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Backend error: ${response.status} - ${errorText}`);
+                }
+                
+                const data = await response.json();
+                console.log('AI Response received:', data);
+                displayResults(data);
+                
+            } catch (error) {
+                console.error('Full error:', error);
+                alert('Failed to connect to AI backend:\n' + error.message + '\n\nMake sure:\n1. Backend is running: python main.py\n2. Backend is on port 5500\n3. Check browser console for details');
+            } finally {
+                document.getElementById('loading').classList.add('hidden');
+            }
+        }
+        
+        function displayResults(data) {
+            const container = document.getElementById('tasks-container');
+            container.innerHTML = '';
+            
+            // Display goal info
+            const goalInfo = document.createElement('div');
+            goalInfo.style.cssText = 'background: #e9ecef; padding: 15px; border-radius: 8px; margin-bottom: 20px;';
+            goalInfo.innerHTML = `
+                <h3 style="margin-top: 0;"> ${data.goal}</h3>
+                ${data.timeframe ? `<p><strong>Timeframe:</strong> ${data.timeframe}</p>` : ''}
+                <p><strong>Total Tasks:</strong> ${data.total_tasks} | <strong>Estimated Hours:</strong> ${data.estimated_total_hours}</p>
+            `;
+            container.appendChild(goalInfo);
+            
+            // Display tasks
+            data.tasks.forEach(task => {
+                const taskElement = document.createElement('div');
+                taskElement.className = `task-card task-priority-${task.priority}`;
+                
+                const priorityColor = task.priority === 'high' ? '#dc3545' : 
+                                   task.priority === 'medium' ? '#ffc107' : '#28a745';
+                
+                taskElement.innerHTML = `
+                    <h4>${task.title}</h4>
+                    <p>${task.description}</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                        <div><strong> Time:</strong> ${task.estimated_hours} hours</div>
+                        <div><strong> Deadline:</strong> ${new Date(task.deadline).toLocaleDateString()}</div>
+                        <div><strong> Dependencies:</strong> ${task.dependencies}</div>
+                        <div><strong> Priority:</strong> <span style="color: ${priorityColor}">${task.priority.toUpperCase()}</span></div>
+                    </div>
+                `;
+                container.appendChild(taskElement);
+            });
+            
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Test connection when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            testBackendConnection();
+        });
+    </script>
+</body>
+</html>
