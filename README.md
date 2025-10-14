@@ -55,5 +55,6 @@ Traditional goal planning suffers from:
 ### Prerequisites
 - Python 3.8 or higher
 - Modern web browser
-- (Optional) OpenAI API key for enhanced AI capabilities
+- OpenAI API key for enhanced AI capabilities
+  
 
