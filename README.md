@@ -26,23 +26,15 @@ Traditional goal planning suffers from:
 
 ## Features
 
-## Intelligent AI Core
 - **Domain-Aware Task Generation**: Specialized templates for sports, languages, business, and general goals
 - **Smart Time Estimation**: Realistic hour calculations based on timeframe and complexity
-- **Dependency Mapping**: Automatic task sequencing with proper prerequisite relationships
 - **Adaptive Deadlines**: Intelligent deadline distribution across short and long timeframes
-
-### Enhanced User Experience
 - **Modern Responsive UI**: Clean interface that works seamlessly across all devices
-- **Real-time Progress Tracking**: Live completion metrics and visual progress indicators
-- **Interactive Task Management**: Mark tasks complete/reopen with progress persistence
 - **Resource Recommendations**: AI-curated tools and resources based on goal type
-
-### Enterprise-Grade Architecture
 - **RESTful API Design**: Well-documented, versioned endpoints with proper HTTP status codes
 - **SQLite Database**: Persistent storage with relational integrity for goals and tasks
 - **CORS Configuration**: Secure cross-origin resource sharing for frontend-backend communication
-- **Comprehensive Error Handling**: Graceful error recovery with meaningful user feedback
+
 
 ### Prerequisites
 - Python 3.8 or higher
