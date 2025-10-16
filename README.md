@@ -27,6 +27,7 @@ Traditional goal planning suffers from:
 ## Features
 
 - **Domain-Aware Task Generation**: Specialized templates for sports, languages, business, and general goals
+- **LLM**: LLM-Powered AI that uses OpenAI GPT for intelligent task generation
 - **Smart Time Estimation**: Realistic hour calculations based on timeframe and complexity
 - **Adaptive Deadlines**: Intelligent deadline distribution across short and long timeframes
 - **Modern Responsive UI**: Clean interface that works seamlessly across all devices
