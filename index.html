@@ -3,56 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Task Planner</title>
+    <title>Smart Task Planner - AI Powered</title>
     <style>
-        body { font-family: Arial; max-width: 800px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
-        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #333; text-align: center; }
-        .status { padding: 10px; border-radius: 5px; margin: 10px 0; }
-        .status-success { background: #d4edda; color: #155724; }
-        .status-error { background: #f8d7da; color: #721c24; }
-        .status-warning { background: #fff3cd; color: #856404; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
-        button { background: #007bff; color: white; padding: 12px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #0056b3; }
-        .task-card { background: #f8f9fa; border-left: 4px solid #007bff; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+            margin: 20px 0;
+        }
+        
+        h1 { 
+            color: #333; 
+            text-align: center; 
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .ai-badge {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .form-group { 
+            margin-bottom: 25px; 
+        }
+        
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input, textarea { 
+            width: 100%; 
+            padding: 15px; 
+            border: 2px solid #e1e5e9; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        
+        button { 
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white; 
+            padding: 15px 40px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .task-card { 
+            background: #f8f9fa; 
+            border-left: 5px solid #007bff; 
+            padding: 20px; 
+            margin: 15px 0; 
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        
+        .task-card:hover {
+            transform: translateX(5px);
+        }
+        
         .task-priority-high { border-left-color: #dc3545; }
         .task-priority-medium { border-left-color: #ffc107; }
+        .task-priority-low { border-left-color: #28a745; }
+        
         .hidden { display: none; }
-        .loading { text-align: center; padding: 20px; }
+        
+        .loading { 
+            text-align: center; 
+            padding: 40px; 
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .results-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .stat-item {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Smart Task Planner</h1>
+        <h1>Smart Task Planner <span class="ai-badge">AI Powered</span></h1>
+        <p class="subtitle">Transform your goals into actionable plans with AI intelligence</p>
         
         <div class="form-group">
-            <label for="goal">Your Goal:</label>
-            <textarea id="goal" rows="3" placeholder="e.g., Launch a product in 2 weeks">Launch a product in 2 weeks</textarea>
+            <label for="goal">🎯 Your Goal:</label>
+            <textarea id="goal" rows="3" placeholder="e.g., Launch a mobile app in 3 months, Learn Spanish in 2 months, Start an e-commerce business...">Learn web development in 2 months</textarea>
         </div>
         
         <div class="form-group">
-            <label for="timeframe">Timeframe (optional):</label>
-            <input type="text" id="timeframe" placeholder="e.g., 2 weeks, 1 month, 3 months" value="2 weeks">
+            <label for="timeframe">⏰ Timeframe (optional):</label>
+            <input type="text" id="timeframe" placeholder="e.g., 2 weeks, 1 month, 3 months" value="2 months">
         </div>
         
-        <button onclick="breakDownGoal()">Generate AI Task Plan</button>
+        <div style="text-align: center;">
+            <button onclick="breakDownGoal()">🚀 Generate AI Task Plan</button>
+        </div>
         
         <div id="loading" class="loading hidden">
-            <p>AI is breaking down your goal into tasks...</p>
+            <div class="spinner"></div>
+            <p>🤖 AI is analyzing your goal and creating a customized plan...</p>
         </div>
         
         <div id="results" class="hidden">
-            <h2>Your AI-Generated Task Plan</h2>
+            <div class="results-header">
+                <h2>✨ Your AI-Generated Task Plan</h2>
+                <div class="stats" id="goal-stats">
+                    <!-- Stats will be populated by JavaScript -->
+                </div>
+            </div>
             <div id="tasks-container"></div>
         </div>
     </div>
 
     <script>
-        // Test backend connection on page load
-        
         async function breakDownGoal() {
             const goal = document.getElementById('goal').value;
             const timeframe = document.getElementById('timeframe').value;
@@ -68,7 +207,8 @@
             try {
                 console.log('Sending request to AI backend...');
                 
-                const response = await fetch('http://localhost:5500/breakdown-goal', {
+                // ✅ FIXED: Use relative path instead of localhost
+                const response = await fetch('/breakdown-goal', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -93,7 +233,7 @@
                 
             } catch (error) {
                 console.error('Full error:', error);
-                alert('Failed to connect to AI backend:\n' + error.message + '\n\nMake sure:\n1. Backend is running: python main.py\n2. Backend is on port 5500\n3. Check browser console for details');
+                alert('Failed to generate task plan. Please try again.\n\nError: ' + error.message);
             } finally {
                 document.getElementById('loading').classList.add('hidden');
             }
@@ -101,20 +241,31 @@
         
         function displayResults(data) {
             const container = document.getElementById('tasks-container');
+            const statsContainer = document.getElementById('goal-stats');
             container.innerHTML = '';
             
-            // Display goal info
-            const goalInfo = document.createElement('div');
-            goalInfo.style.cssText = 'background: #e9ecef; padding: 15px; border-radius: 8px; margin-bottom: 20px;';
-            goalInfo.innerHTML = `
-                <h3 style="margin-top: 0;"> ${data.goal}</h3>
-                ${data.timeframe ? `<p><strong>Timeframe:</strong> ${data.timeframe}</p>` : ''}
-                <p><strong>Total Tasks:</strong> ${data.total_tasks} | <strong>Estimated Hours:</strong> ${data.estimated_total_hours}</p>
+            // Display stats
+            statsContainer.innerHTML = `
+                <div class="stat-item">
+                    <strong>Goal</strong><br>
+                    ${data.goal}
+                </div>
+                <div class="stat-item">
+                    <strong>Timeframe</strong><br>
+                    ${data.timeframe || 'Not specified'}
+                </div>
+                <div class="stat-item">
+                    <strong>Total Tasks</strong><br>
+                    ${data.total_tasks}
+                </div>
+                <div class="stat-item">
+                    <strong>Total Hours</strong><br>
+                    ${data.estimated_total_hours}h
+                </div>
             `;
-            container.appendChild(goalInfo);
             
             // Display tasks
-            data.tasks.forEach(task => {
+            data.tasks.forEach((task, index) => {
                 const taskElement = document.createElement('div');
                 taskElement.className = `task-card task-priority-${task.priority}`;
                 
@@ -122,13 +273,13 @@
                                    task.priority === 'medium' ? '#ffc107' : '#28a745';
                 
                 taskElement.innerHTML = `
-                    <h4>${task.title}</h4>
+                    <h3>${index + 1}. ${task.title}</h3>
                     <p>${task.description}</p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
-                        <div><strong> Time:</strong> ${task.estimated_hours} hours</div>
-                        <div><strong> Deadline:</strong> ${new Date(task.deadline).toLocaleDateString()}</div>
-                        <div><strong> Dependencies:</strong> ${task.dependencies}</div>
-                        <div><strong> Priority:</strong> <span style="color: ${priorityColor}">${task.priority.toUpperCase()}</span></div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <div><strong>⏱️ Time:</strong> ${task.estimated_hours} hours</div>
+                        <div><strong>📅 Deadline:</strong> ${new Date(task.deadline).toLocaleDateString()}</div>
+                        <div><strong>🔗 Dependencies:</strong> ${task.dependencies}</div>
+                        <div><strong>🎯 Priority:</strong> <span style="color: ${priorityColor}">${task.priority.toUpperCase()}</span></div>
                     </div>
                 `;
                 container.appendChild(taskElement);
@@ -138,9 +289,11 @@
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Test connection when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            testBackendConnection();
+        // Enter key support
+        document.getElementById('goal').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                breakDownGoal();
+            }
         });
     </script>
 </body>
