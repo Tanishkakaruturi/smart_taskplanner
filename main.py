@@ -6,6 +6,10 @@ from fastapi.responses import FileResponse
 import sqlite3
 from typing import List, Optional
 import os
+import sys
+
+# Add the current directory to Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Import AI service
 from ai_service import ai_service
