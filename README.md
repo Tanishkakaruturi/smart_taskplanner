@@ -1,43 +1,36 @@
-# Smart Task Planner - AI-Powered Goal Management System
+# 🚀 Smart Task Planner - AI Powered
 
-<div align="center">
+**Live Demo:** [https://smart-task-planner.onrender.com](https://smart-task-planner.onrender.com)
 
-![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)
-![OpenAI](https://img.shields.io/badge/OpenAI-GPT--3.5--turbo-purple.svg)
+## 🤖 About
+AI-powered task management system that breaks down complex goals into actionable tasks using OpenAI GPT-3.5 Turbo.
 
-**Transform goals into actionable, time-bound task plans with AI-powered intelligence**
+## ✨ Features
+- **Real AI Integration** - OpenAI GPT-3.5 Turbo for intelligent task decomposition
+- **Smart Task Generation** - Creates sequential tasks with dependencies and deadlines
+- **Production Ready** - Deployed on Render.com with proper CORS and error handling
+- **Modern UI** - Responsive design with real-time progress tracking
 
-</div>
+## 🛠️ Tech Stack
+- **Backend:** FastAPI, Python, SQLite
+- **AI:** OpenAI GPT-3.5 Turbo
+- **Frontend:** HTML5, CSS3, JavaScript
+- **Deployment:** Render.com
+- **Database:** SQLite
 
-## Overview
+## 🚀 Quick Start
 
-Smart Task Planner is an intelligent web application that leverages AI reasoning to break down complex goals into manageable, dependency-aware tasks with realistic timelines. Whether you're learning new skills, launching projects, or planning business initiatives, our system generates personalized action plans that adapt to your timeframe and goal complexity.
+### Local Development
+```bash
+# 1. Clone repository
+git clone https://github.com/yourusername/smart-task-planner.git
+cd smart-task-planner
 
-### Business Problem Solved
+# 2. Install dependencies
+pip install -r requirements.txt
 
-Traditional goal planning suffers from:
-- **Planning paralysis** - Not knowing where to start
-- **Unrealistic timelines** - Poor time estimation
-- **Missing dependencies** - Overlooking task relationships
-- **Lack of structure** - No clear progression path
+# 3. Set environment variables
+echo "OPENAI_API_KEY=your_openai_api_key_here" > .env
 
-**Our Solution**: AI-generated task breakdowns with intelligent time estimation, dependency mapping, and domain-specific insights.
-
-## Features
-
-- **Domain-Aware Task Generation**: Specialized templates for sports, languages, business, and general goals
-- **LLM**: LLM-Powered AI that uses OpenAI GPT for intelligent task generation
-- **Smart Time Estimation**: Realistic hour calculations based on timeframe and complexity
-- **Adaptive Deadlines**: Intelligent deadline distribution across short and long timeframes
-- **Modern Responsive UI**: Clean interface that works seamlessly across all devices
-- **Resource Recommendations**: AI-curated tools and resources based on goal type
-- **RESTful API Design**: Well-documented, versioned endpoints with proper HTTP status codes
-- **SQLite Database**: Persistent storage with relational integrity for goals and tasks
-- **CORS Configuration**: Secure cross-origin resource sharing for frontend-backend communication
-
-
-### Prerequisites
-- Python 3.8 or higher
-- Modern web browser
-- OpenAI API key for enhanced AI capabilities
+# 4. Run application
+uvicorn main:app --reload --port 5500
