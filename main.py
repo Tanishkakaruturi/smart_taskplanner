@@ -2,8 +2,10 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from datetime import datetime, timedelta
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 import sqlite3
 from typing import List, Optional
+import os
 
 # Import AI service
 from ai_service import ai_service
@@ -47,18 +49,27 @@ init_db()
 
 app = FastAPI(
     title="Smart Task Planner",
-    description="AI-powered task breakdown with LLM reasoning",
-    version="3.0.0"
+    description="AI-powered task breakdown with OpenAI GPT",
+    version="4.0.0"
 )
 
-# CORS middleware - UPDATED TO ALLOW PORT 3000
+# CORS middleware - ALLOW ALL FOR DEPLOYMENT
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=["*"],  # For demo purposes
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serve frontend files
+@app.get("/")
+async def read_index():
+    return FileResponse('frontend/index.html')
+
+@app.get("/{path:path}")
+async def serve_static(path: str):
+    return FileResponse(f'frontend/{path}')
 
 class GoalRequest(BaseModel):
     goal: str
@@ -68,7 +79,7 @@ class TaskResponse(BaseModel):
     id: Optional[int] = None
     title: str
     description: str
-    estimated_hours: float  # ✅ CHANGED FROM int TO float
+    estimated_hours: float
     deadline: str
     dependencies: str
     priority: str
@@ -79,7 +90,7 @@ class GoalResponse(BaseModel):
     goal: str
     timeframe: Optional[str]
     total_tasks: int
-    estimated_total_hours: float  # ✅ CHANGED FROM int TO float
+    estimated_total_hours: float
     tasks: List[TaskResponse]
     created_at: str
     ai_generated: bool
@@ -109,12 +120,12 @@ def break_down_goal(request: GoalRequest):
         )
         goal_id = cursor.lastrowid
         
-        # Save tasks - convert to int for database storage
+        # Save tasks
         for task in tasks_data:
             cursor.execute('''
                 INSERT INTO tasks (goal_id, title, description, estimated_hours, deadline, dependencies, priority)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', (goal_id, task["title"], task["description"], int(task["estimated_hours"]),  # ✅ Convert to int for DB
+            ''', (goal_id, task["title"], task["description"], int(task["estimated_hours"]),
                   task["deadline"], task["dependencies"], task["priority"]))
         
         conn.commit()
@@ -159,7 +170,7 @@ def get_all_goals():
             task_list = []
             for task in tasks:
                 task_dict = dict(task)
-                task_dict["estimated_hours"] = float(task_dict["estimated_hours"])  # ✅ Convert to float for response
+                task_dict["estimated_hours"] = float(task_dict["estimated_hours"])
                 task_list.append(TaskResponse(**task_dict))
             
             goal_data = GoalResponse(
@@ -167,7 +178,7 @@ def get_all_goals():
                 goal=goal["goal_text"],
                 timeframe=goal["timeframe"],
                 total_tasks=len(tasks),
-                estimated_total_hours=sum(float(task["estimated_hours"]) for task in tasks),  # ✅ Convert to float
+                estimated_total_hours=sum(float(task["estimated_hours"]) for task in tasks),
                 tasks=task_list,
                 created_at=goal["created_at"],
                 ai_generated=True
@@ -200,7 +211,7 @@ def get_goal(goal_id: int):
         task_list = []
         for task in tasks:
             task_dict = dict(task)
-            task_dict["estimated_hours"] = float(task_dict["estimated_hours"])  # ✅ Convert to float for response
+            task_dict["estimated_hours"] = float(task_dict["estimated_hours"])
             task_list.append(TaskResponse(**task_dict))
         
         goal_data = GoalResponse(
@@ -208,7 +219,7 @@ def get_goal(goal_id: int):
             goal=goal["goal_text"],
             timeframe=goal["timeframe"],
             total_tasks=len(tasks),
-            estimated_total_hours=sum(float(task["estimated_hours"]) for task in tasks),  # ✅ Convert to float
+            estimated_total_hours=sum(float(task["estimated_hours"]) for task in tasks),
             tasks=task_list,
             created_at=goal["created_at"],
             ai_generated=True
@@ -280,21 +291,11 @@ def reopen_task(task_id: int):
     
     return {"status": "success", "message": f"Task {task_id} reopened"}
 
-@app.get("/")
-def home():
-    return {
-        "message": "Smart Task Planner with AI",
-        "version": "3.0.0",
-        "features": [
-            "LLM-powered task generation",
-            "Database storage", 
-            "REST API",
-            "Task dependencies & timelines",
-            "Task completion tracking"
-        ],
-        "status": "running"
-    }
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "timestamp": datetime.now().isoformat()}
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="localhost", port=5500)
+    port = int(os.environ.get("PORT", 5500))
+    uvicorn.run(app, host="0.0.0.0", port=port)
